@@ -1,21 +1,6 @@
-# Streamlit UI
 streamlit==1.41.1
-
-# LangChain core + partners (0.2.x line)
-langchain==0.2.16
-langchain-community==0.2.16
-langchain-openai==0.1.23
-
-# LangGraph (if you use it)
-langgraph==1.0.6
-
-# OpenAI (if you use OpenAI)
-openai==1.109.1
-
-# Data & utils
-pandas==2.3.3
-numpy==1.26.4
 python-dotenv==1.0.1
+langchain-openai==0.1.23
+langchain-core==0.2.43
+openai==1.109.1
 requests==2.32.5
-tqdm==4.67.1
-rich==13.9.4
