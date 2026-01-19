@@ -5,23 +5,46 @@ import streamlit as st
 from langchain_openai import ChatOpenAI
 from langchain_core.messages import HumanMessage, AIMessage
 
-# Load environment variables
-load_dotenv()
-
-OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
-
 # Streamlit page config
 st.set_page_config(page_title="OpenRouter Chatbot", page_icon="🤖", layout="centered")
 
 st.title("🤖 OpenRouter Chatbot (LangChain + Streamlit)")
 st.caption("Free model chatbot using OpenRouter API")
 
+
+# Load environment variables
+load_dotenv()
+
+OPENROUTER_API_KEY = None
+
+# ✅ Production (Streamlit cloud) try secrets
+try:
+    OPENROUTER_API_KEY = st.secrets.get("OPENROUTER_API_KEY")
+except FileNotFoundError:
+    pass
+
+# ✅ Local fallback (.env)
+if not OPENROUTER_API_KEY:
+    OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
+
+if not OPENROUTER_API_KEY:
+    st.error("OPENROUTER_API_KEY not found. Add it in .env or Streamlit Secrets.")
+    st.stop()
+
+
 # Initialize LLM
+# llm = ChatOpenAI(
+#     model="openai/gpt-oss-120b:free",
+#     api_key=OPENROUTER_API_KEY,
+#     base_url="https://openrouter.ai/api/v1",
+# )
+
 llm = ChatOpenAI(
     model="openai/gpt-oss-120b:free",
-    api_key=OPENROUTER_API_KEY,
-    base_url="https://openrouter.ai/api/v1",
+    openai_api_key=OPENROUTER_API_KEY,
+    openai_api_base="https://openrouter.ai/api/v1",
 )
+
 
 # Store chat history in session state
 if "messages" not in st.session_state:
